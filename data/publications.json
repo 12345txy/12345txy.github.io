@@ -1,0 +1,124 @@
+{
+  "papers": [
+    {
+      "id": "phygenbench",
+      "title": "Towards world simulator: Crafting physical commonsense-based benchmark for video generation",
+      "authors": [
+        "Fanqing Meng",
+        "Jiaqi Liao",
+        "Xinyu Tan",
+        "Quanfeng Lu",
+        "Wenqi Shao",
+        "Kaipeng Zhang",
+        "Yu Cheng",
+        "Dianqi Li",
+        "Ping Luo"
+      ],
+      "year": 2025,
+      "venue": "ICML 2025 · Poster",
+      "paperUrl": "https://arxiv.org/abs/2410.05363",
+      "links": [
+        {
+          "label": "Project page",
+          "url": "https://phygenbench123.github.io/"
+        },
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:u5HHmVD_uO8C"
+        }
+      ],
+      "citations": {
+        "count": 248,
+        "source": "OpenAlex",
+        "url": "https://openalex.org/W4403346161",
+        "checkedAt": "2026-11-26"
+      }
+    },
+    {
+      "id": "harness-bench",
+      "title": "Harness-Bench: Evaluating Agent Harnesses across Models and Realistic Workflows",
+      "authors": [
+        "Yilun Yao*",
+        "Xinyu Tan*",
+        "Chao-Hsuan Liu*",
+        "Yaoming Li*",
+        "et al."
+      ],
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "paperUrl": "https://arxiv.org/abs/2605.27922",
+      "links": [
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:9yKSN-GCB0IC"
+        }
+      ],
+      "citations": {
+        "count": 87,
+        "source": "OpenAlex",
+        "url": "https://openalex.org/W7162690279",
+        "checkedAt": "2026-11-26"
+      }
+    },
+    {
+      "id": "arbormem",
+      "title": "ArborMem: Navigating Interaction States with Memory Forests",
+      "authors": [
+        "Zongwei Lv",
+        "Yuemeng Xu",
+        "Yilun Yao",
+        "Siyi Ding",
+        "Xinyu Tan",
+        "et al."
+      ],
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "paperUrl": "https://arxiv.org/abs/2608.17534",
+      "links": [
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:2osOgNQ5qMEC"
+        }
+      ],
+      "citations": {
+        "count": 0,
+        "source": "OpenAlex",
+        "url": "https://openalex.org/W7204216685",
+        "checkedAt": "2026-11-26"
+      }
+    },
+    {
+      "id": "fairy2i",
+      "title": "Fairy2i: Training Complex LLMs from Real LLMs with All Parameters in {±1, ±i}",
+      "authors": [
+        "Feiyu Wang",
+        "Xinyu Tan",
+        "Bokai Huang",
+        "et al."
+      ],
+      "year": 2025,
+      "venue": "arXiv preprint",
+      "paperUrl": "https://arxiv.org/abs/2512.02901",
+      "links": [
+        {
+          "label": "Code",
+          "url": "https://github.com/PKULab1806/Fairy2i-W2"
+        },
+        {
+          "label": "Model",
+          "url": "https://huggingface.co/PKU-DS-LAB/Fairy2i-W2"
+        },
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:d1gkVwhDpl0C"
+        }
+      ],
+      "citations": {
+        "count": 2,
+        "source": "OpenAlex",
+        "url": "https://openalex.org/W4417010769",
+        "checkedAt": "2026-11-26"
+      }
+    }
+  ]
+}
