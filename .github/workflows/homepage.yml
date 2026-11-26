@@ -46,7 +46,7 @@ jobs:
           python3 scripts/build_blog.py
       - name: Save refreshed snapshot
         run: |
-          git add data/publications.json index.html blog
+          git add data/publications.json index.html blog notes
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -59,6 +59,8 @@ jobs:
           cp -R index.html assets data "$RUNNER_TEMP/homepage/"
           mkdir -p "$RUNNER_TEMP/homepage/blog"
           cp blog/*.html "$RUNNER_TEMP/homepage/blog/"
+          mkdir -p "$RUNNER_TEMP/homepage/notes"
+          cp notes/*.html "$RUNNER_TEMP/homepage/notes/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/homepage

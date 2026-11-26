@@ -26,6 +26,7 @@ import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTES = ROOT / "blog"
+LEGACY = ROOT / "notes"  # old URLs (the blog was called Notes); keep redirect stubs so links never 404
 HLJS = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0"
 
 
@@ -150,6 +151,35 @@ def index_page(notes, css_v):
                 notes_current=' aria-current="page"')
 
 
+def redirect_page(target):
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Moved</title>
+  <link rel="canonical" href="{target}">
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0; url={target}">
+  <script>location.replace("{target}" + location.hash)</script>
+</head>
+<body><p>This page moved to <a href="{target}">{target}</a>.</p></body>
+</html>
+"""
+
+
+def write_legacy_redirects(notes):
+    LEGACY.mkdir(exist_ok=True)
+    keep = {"index.html"}
+    (LEGACY / "index.html").write_text(redirect_page("../blog/index.html"), encoding="utf-8")
+    for note in notes:
+        name = f"{note['slug']}.html"
+        (LEGACY / name).write_text(redirect_page(f"../blog/{name}"), encoding="utf-8")
+        keep.add(name)
+    for stale in LEGACY.glob("*.html"):
+        if stale.name not in keep:
+            stale.unlink()
+
+
 def replace_block(html, key, content):
     start, end = f"<!-- {key}:start -->", f"<!-- {key}:end -->"
     before, found, tail = html.partition(start)
@@ -174,6 +204,7 @@ def main():
         if stale.name not in keep:
             stale.unlink()
     (NOTES / "index.html").write_text(index_page(shown, css_v), encoding="utf-8")
+    write_legacy_redirects(shown)
 
     home = ROOT / "index.html"
     html = home.read_text(encoding="utf-8")
