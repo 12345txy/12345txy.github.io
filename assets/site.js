@@ -14,7 +14,6 @@ function showLanguage(language) {
 }
 let saved = null;
 try { saved = localStorage.getItem('homepage-language'); } catch { /* Storage is optional. */ }
-if (!saved && (navigator.language || '').toLowerCase().startsWith('zh')) saved = 'zh-CN';
 showLanguage(saved);
 languageButton.addEventListener('click', () => {
   const next = document.documentElement.lang === 'en' ? 'zh-CN' : 'en';

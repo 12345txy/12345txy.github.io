@@ -163,9 +163,10 @@ a.hl:hover { color: var(--accent); }
   flex: none; width: 44px; height: 44px; border-radius: 50%;
   display: grid; place-items: center; color: #fff; font-weight: 750; font-size: 12.5px; letter-spacing: .02em;
 }
-.m360 { background: #2fa84f; }
-.mpku { background: #94070a; }
-.mbupt { background: #1f4e9a; font-size: 11px; }
+.logo {
+  flex: none; width: 56px; height: 56px; object-fit: contain;
+  border-radius: 50%; background: #fff;
+}
 .exp h3 { font-size: 15.5px; line-height: 1.35; }
 .exp .when { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
 .exp .what { font-size: 14px; font-weight: 600; margin-top: 2px; }
