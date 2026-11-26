@@ -4,7 +4,7 @@ date: 2026-11-26
 summary: 多轮 Agent 评测里，模型在第二轮突然“忘了任务”，却没有任何报错。用 cache_salt 做对照、抓真实请求重放，最终定位到解码阶段写入的缓存块。
 tags: vLLM, Inference, Evaluation, Debugging
 lang: zh
-draft: true
+draft: false
 ---
 
 > **TL;DR** 在 vLLM 上同时开启前缀缓存（prefix caching）和 MTP 投机解码，服务一个 Mamba + Attention 混合架构的模型时，**解码阶段写入缓存的块**会带着错误状态被后续请求复用。结果是多轮 Agent 在第二轮开始“忘记任务”，而日志里没有任何报错。修复方式是只缓存 prompt 部分的块。

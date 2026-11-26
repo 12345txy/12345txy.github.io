@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="多轮 Agent 评测里，模型在第二轮突然“忘了任务”，却没有任何报错。用 cache_salt 做对照、抓真实请求重放，最终定位到解码阶段写入的缓存块。">
+  <title>评测分数别急着信：一次 vLLM 前缀缓存导致的静默错误 · Xinyu Tan</title>
+  <link rel="icon" href="../assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="../assets/style.css?v=5b36a86383">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onload="hljs.highlightAll()"></script>
+</head>
+<body class="note-page">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="../index.html"><img class="brand-mark" src="../assets/favicon.svg" alt="" width="26" height="26">Xinyu Tan</a>
+      <nav aria-label="Main navigation">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#publications">Publications</a>
+        <a href="../notes/index.html">Notes</a>
+      </nav>
+    </div>
+  </header>
+  <main class="article">
+    <p class="article-back"><a href="index.html">← Notes</a></p>
+    
+    <h1>评测分数别急着信：一次 vLLM 前缀缓存导致的静默错误</h1>
+    <p class="article-meta"><time datetime="2026-11-26">2026-11-26</time><span>4 min</span><span class="note-tag">vLLM</span><span class="note-tag">Inference</span><span class="note-tag">Evaluation</span><span class="note-tag">Debugging</span></p>
+    <div class="article-body">
+<blockquote>
+<p><strong>TL;DR</strong> 在 vLLM 上同时开启前缀缓存（prefix caching）和 MTP 投机解码，服务一个 Mamba + Attention 混合架构的模型时，<strong>解码阶段写入缓存的块</strong>会带着错误状态被后续请求复用。结果是多轮 Agent 在第二轮开始“忘记任务”，而日志里没有任何报错。修复方式是只缓存 prompt 部分的块。</p>
+</blockquote>
+<h2 id="_1">背景<a class="headerlink" href="#_1">#</a></h2>
+<p>我在做代码 Agent 的多轮评测：模型每一轮都会收到“系统提示 + 任务描述 + 之前所有轮次的对话和工具输出”，上下文动辄几万 token。这类负载天然适合前缀缓存：第 <em>n</em> 轮的 prompt 几乎完整包含第 <em>n−1</em> 轮的内容，命中缓存可以省掉绝大部分 prefill。</p>
+<p>服务配置大致是：</p>
+<ul>
+<li>推理框架：vLLM 0.23</li>
+<li>模型：开源的 Mamba + Attention 混合架构模型（这类模型的前缀缓存走实验性的 Mamba <code>align</code> 模式，vLLM 启动时会打一条 warning）</li>
+<li>开启 <code>--enable-prefix-caching</code>，并使用 MTP 投机解码</li>
+</ul>
+<h2 id="_2">现象：模型“忘了任务”，但什么都没报错<a class="headerlink" href="#_2">#</a></h2>
+<p>翻轨迹时发现一个奇怪的模式：第一轮模型明明理解了任务、开始读代码，第二轮却说出类似 <em>“用户还没有给我任何任务”</em> 的话，然后开始漫无目的地探索。</p>
+<p>这种错误非常隐蔽：</p>
+<ul>
+<li>服务端没有异常，请求全部 200；</li>
+<li>评测脚本只看最终分数，只会表现为“这个模型分数偏低”；</li>
+<li>单看任何一条轨迹，都可能被当成模型能力问题。</li>
+</ul>
+<h2 id="prompt">第一步：先排除 prompt 本身的问题<a class="headerlink" href="#prompt">#</a></h2>
+<p>最直接的怀疑是客户端拼 prompt 出了错，比如截断或丢了任务描述。用 vLLM 的 <code>/v1/chat/completions/render</code> 接口把实际送进模型的 prompt 渲染出来，任务描述完整地在里面。prompt 没问题。</p>
+<h2 id="cache_salt">第二步：用 <code>cache_salt</code> 做对照<a class="headerlink" href="#cache_salt">#</a></h2>
+<p>vLLM 支持在请求里带 <code>cache_salt</code>：salt 不同的请求不会共享前缀缓存。这就得到了一个干净的对照实验——<strong>同一个请求，唯一的区别是是否命中缓存</strong>：</p>
+<pre><code class="language-python">import requests
+
+def ask(body, salt=None):
+    if salt:
+        body = {**body, &quot;cache_salt&quot;: salt}
+    r = requests.post(f&quot;{BASE}/v1/chat/completions&quot;, json=body, timeout=600)
+    return r.json()[&quot;choices&quot;][0][&quot;message&quot;][&quot;content&quot;]
+
+# body = 抓到的一个真实的第二轮请求
+hit  = [ask(body) for _ in range(11)]                              # 命中缓存
+cold = [ask(body, salt=f&quot;fresh-{i}&quot;) for i in range(11)]          # 强制不命中
+</code></pre>
+<p>结果：</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>“没有任务”的比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命中前缀缓存</td>
+<td>6 / 11</td>
+</tr>
+<tr>
+<td>新 salt（不命中）</td>
+<td>0 / 11</td>
+</tr>
+</tbody>
+</table>
+<p>prompt 完全相同，只差在缓存，结论很明确：<strong>问题出在前缀缓存</strong>。</p>
+<h2 id="_3">第三步：合成实验复现失败<a class="headerlink" href="#_3">#</a></h2>
+<p>接下来想用合成数据稳定复现：长单轮/两轮对话、并发共享前缀、制造 KV 压力触发驱逐……开和不开 MTP 都试了，<strong>全部正常</strong>。</p>
+<p>这一步很容易让人以为“是偶发、可以忽略”。但回头看，合成实验的问题在于没有覆盖真实负载的关键特征。</p>
+<h2 id="_4">第四步：抓真实请求，按“缓存来自哪里”分组重放<a class="headerlink" href="#_4">#</a></h2>
+<p>于是换了思路：在评测链路里把每一轮的请求体原样落盘，然后对出问题的那一轮做重放，并<strong>控制缓存里的内容是怎么来的</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>缓存来源</th>
+<th>丢任务的比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>冷启动（新 salt）</td>
+<td>0 / 4</td>
+</tr>
+<tr>
+<td>只命中 prompt 阶段写入的块</td>
+<td>0 / 4</td>
+</tr>
+<tr>
+<td>命中<strong>上一轮解码时</strong>写入的块</td>
+<td>4 / 4</td>
+</tr>
+</tbody>
+</table>
+<p>关键就在第三行：上一轮模型生成的输出，会在解码过程中被逐块写进前缀缓存；下一轮请求的 prompt 恰好包含这段输出，于是命中了这些块。<strong>解码阶段完成的块带着错误的状态</strong>（推测与 MTP 投机解码和 Mamba <code>align</code> 模式的状态对齐有关），复用它们就会污染下一轮的上下文。</p>
+<p>这也解释了合成实验为什么没复现：短对话里，解码写入的块很少被下一轮命中。</p>
+<h2 id="prompt_1">修复：只缓存 prompt 块<a class="headerlink" href="#prompt_1">#</a></h2>
+<p>既然问题只出在“解码阶段写入的块”，最小的修复就是让前缀缓存只登记 prompt 部分的块：把 <code>KVCacheCoordinator.cache_blocks</code> 的 token 数截断到 <code>num_prompt_tokens</code>。</p>
+<p>为了不改动共享的 vLLM 安装，我用 <code>sitecustomize.py</code> 写了一个 import hook，只在设置了环境变量的进程里生效：</p>
+<pre><code class="language-python"># sitecustomize.py —— 放进 PYTHONPATH，并设置 VLLM_PREFIX_CACHE_PROMPT_ONLY=1
+import importlib.abc, importlib.machinery, os, sys
+
+_TARGET = &quot;vllm.v1.core.kv_cache_coordinator&quot;
+
+def _patch(mod):
+    for obj in list(vars(mod).values()):
+        if isinstance(obj, type) and &quot;cache_blocks&quot; in vars(obj) and obj.__module__ == _TARGET:
+            orig = vars(obj)[&quot;cache_blocks&quot;]
+            def cache_blocks(self, request, num_computed_tokens, _orig=orig):
+                # 只把 prompt 部分登记进前缀缓存，解码产生的块不缓存
+                return _orig(self, request, min(num_computed_tokens, request.num_prompt_tokens))
+            obj.cache_blocks = cache_blocks
+
+class _Finder(importlib.abc.MetaPathFinder):
+    def find_spec(self, name, path, target=None):
+        if name != _TARGET:
+            return None
+        sys.meta_path.remove(self)
+        spec = importlib.machinery.PathFinder.find_spec(name, path)
+        load = spec.loader.exec_module
+        def exec_and_patch(module):
+            load(module)
+            _patch(module)
+        spec.loader.exec_module = exec_and_patch
+        return spec
+
+if os.environ.get(&quot;VLLM_PREFIX_CACHE_PROMPT_ONLY&quot;) == &quot;1&quot;:
+    sys.meta_path.insert(0, _Finder())
+</code></pre>
+<p>代价很小：每一轮需要多 prefill 一次上一轮的输出（通常约 1k token），而几万 token 的历史前缀依然能命中缓存。</p>
+<p>用规则扫描轨迹也印证了这一点：开着缓存的批次里，有 4 / 53 个会话出现“没有任务”的话术；关闭缓存的 226 个会话里是 0。</p>
+<h2 id="_5">经验<a class="headerlink" href="#_5">#</a></h2>
+<ol>
+<li><strong>推理优化不保证数值等价。</strong> 前缀缓存、投机解码、量化 KV 这些优化，上线前至少用开/关对照验证一次输出分布，尤其是新架构（混合注意力、状态空间模型）配上实验性特性的时候。</li>
+<li><strong>给静默错误装“探针”。</strong> 分数只是最后一层信号。针对已知症状写规则扫描轨迹（比如搜“用户没有给任务”这类话术），能把“分数偏低”变成可计数的异常。</li>
+<li><strong><code>cache_salt</code> 是很好用的对照工具。</strong> 它让你在不改服务配置的前提下，对同一个请求做“命中/不命中”的 A/B。</li>
+<li><strong>合成复现失败 ≠ 没有问题。</strong> 把真实请求原样落盘并重放，比设计合成用例更快逼近真实的触发条件。</li>
+<li><strong>修复先做最小侵入。</strong> 用环境变量开关的 import hook，不动共享安装，出问题可以一键回退。</li>
+</ol>
+<p><em>注：以上基于 vLLM 0.23，后续版本可能已经修复。</em></p>
+    </div>
+  </main>
+  <footer class="note-footer"><a href="../index.html">← Xinyu Tan</a><span>© Xinyu Tan</span></footer>
+</body>
+</html>
