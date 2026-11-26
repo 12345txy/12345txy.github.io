@@ -1,4 +1,4 @@
-"""Build engineering notes: notes/*.md -> notes/<slug>.html, notes/index.html, and the homepage Notes block.
+"""Build engineering notes: notes/*.md -> notes/<slug>.html, notes/index.html, and the homepage nav link.
 
 Each note starts with a front-matter block:
 
@@ -26,7 +26,6 @@ import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
 NOTES = ROOT / "notes"
-HOME_LIMIT = 5
 HLJS = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0"
 
 
@@ -75,7 +74,7 @@ def lang_badge(note):
     return '<span class="note-lang">中文</span>' if note["lang"] == "zh" else ""
 
 
-def page(title, description, body, lang, prefix, css_v, extra_head=""):
+def page(title, description, body, lang, prefix, css_v, extra_head="", notes_current=""):
     return f"""<!doctype html>
 <html lang="{'zh-CN' if lang == 'zh' else 'en'}">
 <head>
@@ -94,8 +93,11 @@ def page(title, description, body, lang, prefix, css_v, extra_head=""):
       <a class="brand" href="{prefix}index.html"><img class="brand-mark" src="{prefix}assets/favicon.svg" alt="" width="26" height="26">Xinyu Tan</a>
       <nav aria-label="Main navigation">
         <a href="{prefix}index.html#about">About</a>
+        <a href="{prefix}index.html#news">News</a>
+        <a href="{prefix}index.html#experience">Experience</a>
         <a href="{prefix}index.html#publications">Publications</a>
-        <a href="{prefix}notes/index.html">Notes</a>
+        <a href="{prefix}index.html#awards">Awards</a>
+        <a href="{prefix}notes/index.html"{notes_current}>Notes</a>
       </nav>
     </div>
   </header>
@@ -123,7 +125,8 @@ def note_page(note, css_v):
 {content}
     </div>
   </main>"""
-    return page(f"{note['title']} · Xinyu Tan", note["summary"], body, note["lang"], "../", css_v, hl)
+    return page(f"{note['title']} · Xinyu Tan", note["summary"], body, note["lang"], "../", css_v, hl,
+                notes_current=' aria-current="page"')
 
 
 def list_items(notes, href_prefix):
@@ -138,12 +141,13 @@ def list_items(notes, href_prefix):
 def index_page(notes, css_v):
     body = f"""  <main class="article">
     <h1>Engineering Notes</h1>
-    <p class="article-meta">Lessons from training, serving and evaluating LLMs. 实习中踩过的坑与工程经验。</p>
+    <p class="article-meta">Lessons from training, serving and evaluating LLMs. 实习中踩过的坑与工程经验。<span>{len(notes)} {'note' if len(notes) == 1 else 'notes'}</span></p>
     <ul class="notes-list">
 {list_items(notes, '')}
     </ul>
   </main>"""
-    return page("Engineering Notes · Xinyu Tan", "Engineering notes by Xinyu Tan.", body, "en", "../", css_v)
+    return page("Engineering Notes · Xinyu Tan", "Engineering notes by Xinyu Tan.", body, "en", "../", css_v,
+                notes_current=' aria-current="page"')
 
 
 def replace_block(html, key, content):
@@ -173,19 +177,9 @@ def main():
 
     home = ROOT / "index.html"
     html = home.read_text(encoding="utf-8")
-    nav = '<a href="#notes"><span class="en">Notes</span><span class="zh">笔记</span></a>' if shown else ""
-    section = ""
-    if shown:
-        more = (f'<p class="notes-more"><a href="notes/index.html"><span class="en">All {len(shown)} notes →</span>'
-                f'<span class="zh">全部 {len(shown)} 篇 →</span></a></p>') if len(shown) > HOME_LIMIT else ""
-        section = f"""<section id="notes" aria-labelledby="notes-title">
-        <h2 id="notes-title"><svg class="hicon" aria-hidden="true"><use href="#i-pen"/></svg><span class="en">Engineering Notes</span><span class="zh">工程笔记</span></h2>
-        <ul class="notes-list">
-{list_items(shown[:HOME_LIMIT], 'notes/')}
-        </ul>{more}
-      </section>"""
-    html = replace_block(html, "notes-nav", nav)
-    home.write_text(replace_block(html, "notes-section", section), encoding="utf-8")
+    nav = ('<a href="notes/index.html"><span class="en">Notes</span><span class="zh">笔记</span></a>'
+           if shown else "")
+    home.write_text(replace_block(html, "notes-nav", nav), encoding="utf-8")
     print(f"notes: {len(shown)} built ({sum(n['draft'] for n in shown)} drafts), {len(notes)} sources")
 
 

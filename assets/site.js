@@ -34,7 +34,7 @@ for (const button of filters) {
   });
 }
 
-const navigation = Array.from(document.querySelectorAll('nav a'));
+const navigation = Array.from(document.querySelectorAll('nav a[href^="#"]'));
 const sections = navigation.map(link => document.querySelector(link.hash));
 function highlightSection() {
   let active = sections[0];
