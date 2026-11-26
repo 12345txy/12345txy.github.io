@@ -152,7 +152,7 @@ a.hl:hover { color: var(--accent); }
 .news time { font-variant-numeric: tabular-nums; color: var(--venue); font-weight: 650; font-size: 14.5px; }
 
 /* experience */
-.exp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.exp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .exp {
   display: flex; gap: 12px; align-items: flex-start;
   border: 1px solid var(--line); border-radius: var(--radius); padding: 14px;
