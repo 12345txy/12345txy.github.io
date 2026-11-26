@@ -1,6 +1,8 @@
 """Render papers into the homepage so static readers and search engines see the same data."""
 
 from datetime import date
+import hashlib
+import re
 from html import escape
 import json
 from pathlib import Path
@@ -96,6 +98,16 @@ def replace_block(html, key, content):
     return f"{before}{start}\n{content}\n{end}{after}"
 
 
+def bust_cache(html):
+    """Version CSS/JS links by content hash so browsers never pair new HTML with stale assets."""
+    for name in ("style.css", "site.js"):
+        digest = hashlib.sha1((PUBLIC / "assets" / name).read_bytes()).hexdigest()[:10]
+        html, n = re.subn(rf'assets/{re.escape(name)}(\?v=[0-9a-f]+)?"', f'assets/{name}?v={digest}"', html)
+        if n != 1:
+            raise ValueError(f"Expected one link to assets/{name}, found {n}")
+    return html
+
+
 def main():
     papers = json.loads((PUBLIC / "data/publications.json").read_text())["papers"]
     dates = sorted({date.fromisoformat(p["citations"]["checkedAt"]).isoformat() for p in papers})
@@ -114,6 +126,7 @@ def main():
     html = replace_block(html, "citation-stat", stat)
     html = replace_block(html, "updated", checked)
     html = replace_block(html, "filters", filters_html(papers))
+    html = bust_cache(html)
     path.write_text(replace_block(html, "publications", "\n".join(map(paper_html, papers))))
 
 
