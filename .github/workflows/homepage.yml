@@ -7,11 +7,11 @@ on:
       - .github/workflows/homepage.yml
       - scripts/update_citations.py
       - scripts/render_publications.py
-      - scripts/build_notes.py
+      - scripts/build_blog.py
       - data/publications.json
       - index.html
       - assets/**
-      - notes/**
+      - blog/**
   schedule:
     - cron: '17 0 * * 1'
   workflow_dispatch:
@@ -40,13 +40,13 @@ jobs:
         run: python3 scripts/update_citations.py
       - name: Render publications
         run: python3 scripts/render_publications.py
-      - name: Build engineering notes
+      - name: Build blog
         run: |
           python3 -m pip install --quiet markdown==3.7
-          python3 scripts/build_notes.py
+          python3 scripts/build_blog.py
       - name: Save refreshed snapshot
         run: |
-          git add data/publications.json index.html notes
+          git add data/publications.json index.html blog
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -57,8 +57,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/homepage"
           cp -R index.html assets data "$RUNNER_TEMP/homepage/"
-          mkdir -p "$RUNNER_TEMP/homepage/notes"
-          cp notes/*.html "$RUNNER_TEMP/homepage/notes/"
+          mkdir -p "$RUNNER_TEMP/homepage/blog"
+          cp blog/*.html "$RUNNER_TEMP/homepage/blog/"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/homepage

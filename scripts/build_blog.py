@@ -1,4 +1,4 @@
-"""Build engineering notes: notes/*.md -> notes/<slug>.html, notes/index.html, and the homepage nav link.
+"""Build the blog: blog/*.md -> blog/<slug>.html, blog/index.html, and the homepage nav link.
 
 Each note starts with a front-matter block:
 
@@ -11,7 +11,7 @@ Each note starts with a front-matter block:
     draft: true         # drafts are skipped unless --drafts is passed
     ---
 
-Usage: python3 scripts/build_notes.py [--drafts]
+Usage: python3 scripts/build_blog.py [--drafts]
 """
 
 from datetime import date
@@ -25,7 +25,7 @@ import sys
 import markdown
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTES = ROOT / "notes"
+NOTES = ROOT / "blog"
 HLJS = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0"
 
 
@@ -97,7 +97,7 @@ def page(title, description, body, lang, prefix, css_v, extra_head="", notes_cur
         <a href="{prefix}index.html#experience">Experience</a>
         <a href="{prefix}index.html#publications">Publications</a>
         <a href="{prefix}index.html#awards">Awards</a>
-        <a href="{prefix}notes/index.html"{notes_current}>Notes</a>
+        <a href="{prefix}blog/index.html"{notes_current}>Blog</a>
       </nav>
     </div>
   </header>
@@ -117,7 +117,7 @@ def note_page(note, css_v):
           f'\n  <script defer src="{HLJS}/highlight.min.js" onload="hljs.highlightAll()"></script>')
     draft = '<p class="note-draft">DRAFT · 草稿，未发布</p>' if note["draft"] else ""
     body = f"""  <main class="article">
-    <p class="article-back"><a href="index.html">← Notes</a></p>
+    <p class="article-back"><a href="index.html">← Blog</a></p>
     {draft}
     <h1>{escape(note['title'])}</h1>
     <p class="article-meta"><time datetime="{note['date'].isoformat()}">{note['date'].isoformat()}</time><span>{reading_minutes(note)} min</span>{tags_html(note['tags'])}</p>
@@ -140,13 +140,13 @@ def list_items(notes, href_prefix):
 
 def index_page(notes, css_v):
     body = f"""  <main class="article">
-    <h1>Engineering Notes</h1>
-    <p class="article-meta">Lessons from training, serving and evaluating LLMs. 实习中踩过的坑与工程经验。<span>{len(notes)} {'note' if len(notes) == 1 else 'notes'}</span></p>
+    <h1>Blog</h1>
+    <p class="article-meta">Lessons from training, serving and evaluating LLMs. 实习中踩过的坑与工程经验。<span>{len(notes)} {'post' if len(notes) == 1 else 'posts'}</span></p>
     <ul class="notes-list">
 {list_items(notes, '')}
     </ul>
   </main>"""
-    return page("Engineering Notes · Xinyu Tan", "Engineering notes by Xinyu Tan.", body, "en", "../", css_v,
+    return page("Blog · Xinyu Tan", "Blog posts by Xinyu Tan.", body, "en", "../", css_v,
                 notes_current=' aria-current="page"')
 
 
@@ -177,10 +177,10 @@ def main():
 
     home = ROOT / "index.html"
     html = home.read_text(encoding="utf-8")
-    nav = ('<a href="notes/index.html"><span class="en">Notes</span><span class="zh">笔记</span></a>'
+    nav = ('<a href="blog/index.html"><span class="en">Blog</span><span class="zh">博客</span></a>'
            if shown else "")
-    home.write_text(replace_block(html, "notes-nav", nav), encoding="utf-8")
-    print(f"notes: {len(shown)} built ({sum(n['draft'] for n in shown)} drafts), {len(notes)} sources")
+    home.write_text(replace_block(html, "blog-nav", nav), encoding="utf-8")
+    print(f"blog: {len(shown)} built ({sum(n['draft'] for n in shown)} drafts), {len(notes)} sources")
 
 
 if __name__ == "__main__":
