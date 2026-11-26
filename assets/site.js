@@ -1,7 +1,7 @@
 document.documentElement.classList.add('js');
 
 const languageButton = document.getElementById('language');
-const portrait = document.querySelector('.portrait-ring img');
+const portrait = document.querySelector('.avatar');
 const englishAlt = portrait.alt;
 
 function showLanguage(language) {
@@ -10,13 +10,12 @@ function showLanguage(language) {
   languageButton.setAttribute('aria-label', chinese ? 'Switch to English' : '切换到中文');
   portrait.alt = chinese ? portrait.dataset.altZh : englishAlt;
   document.querySelector('nav').setAttribute('aria-label', chinese ? '主导航' : 'Main navigation');
-  document.querySelector('.filters').setAttribute('aria-label', chinese ? '论文类型' : 'Publication type');
+  document.querySelector('.filters').setAttribute('aria-label', chinese ? '筛选论文' : 'Filter publications');
 }
-try {
-  showLanguage(localStorage.getItem('homepage-language'));
-} catch {
-  showLanguage('en');
-}
+let saved = null;
+try { saved = localStorage.getItem('homepage-language'); } catch { /* Storage is optional. */ }
+if (!saved && (navigator.language || '').toLowerCase().startsWith('zh')) saved = 'zh-CN';
+showLanguage(saved);
 languageButton.addEventListener('click', () => {
   const next = document.documentElement.lang === 'en' ? 'zh-CN' : 'en';
   showLanguage(next);
@@ -27,9 +26,10 @@ const filters = document.querySelectorAll('[data-filter]');
 const papers = document.querySelectorAll('.paper');
 for (const button of filters) {
   button.addEventListener('click', () => {
+    const key = button.dataset.filter;
     for (const item of filters) item.setAttribute('aria-pressed', String(item === button));
     for (const paper of papers) {
-      paper.hidden = button.dataset.filter !== 'all' && button.dataset.filter !== paper.dataset.type;
+      paper.hidden = key !== 'all' && !paper.dataset.tags.split(' ').includes(key);
     }
     highlightSection();
   });
@@ -39,7 +39,7 @@ const navigation = Array.from(document.querySelectorAll('nav a'));
 const sections = navigation.map(link => document.querySelector(link.hash));
 function highlightSection() {
   let active = sections[0];
-  const threshold = document.querySelector('header').offsetHeight + 35;
+  const threshold = document.querySelector('.topbar').offsetHeight + 40;
   for (const section of sections) {
     if (section.getBoundingClientRect().top <= threshold) active = section;
   }

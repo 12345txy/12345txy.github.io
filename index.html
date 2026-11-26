@@ -3,111 +3,195 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fbfbf8">
-  <meta name="description" content="Xinyu Tan (谭昕宇), a master's student at Peking University. Research on coding LLMs, AI agents, multimodal evaluation and model compression.">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16181c" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="Xinyu Tan (谭昕宇), master's student at Peking University and research intern at 360. Coding LLMs, AI agents, multimodal evaluation and model compression.">
   <title>Xinyu Tan · 谭昕宇</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/instrument-serif.woff" as="font" type="font/woff" crossorigin>
   <link rel="stylesheet" href="assets/style.css">
   <script defer src="assets/site.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#about"><span class="en">Skip to content</span><span class="zh" lang="zh-CN">跳到正文</span></a>
-  <header class="masthead">
-    <div class="frame masthead-inner">
-      <a class="brand" href="#about" aria-label="Xinyu Tan"><span class="monogram" aria-hidden="true">xt<span>.</span></span><span>Xinyu Tan</span></a>
+  <a class="skip-link" href="#about"><span class="en">Skip to content</span><span class="zh">跳到正文</span></a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#about">Xinyu Tan <span class="brand-zh">谭昕宇</span></a>
       <nav aria-label="Main navigation">
-        <a href="#about" aria-current="location"><span class="en">About</span><span class="zh">关于我</span></a>
-        <a href="#publications"><span class="en">Publications</span><span class="zh">论文</span></a>
+        <a href="#about"><span class="en">About</span><span class="zh">关于</span></a>
+        <a href="#news"><span class="en">News</span><span class="zh">动态</span></a>
         <a href="#experience"><span class="en">Experience</span><span class="zh">经历</span></a>
+        <a href="#publications"><span class="en">Publications</span><span class="zh">论文</span></a>
+        <a href="#awards"><span class="en">Awards</span><span class="zh">荣誉</span></a>
       </nav>
-      <button class="locale interactive" id="language" type="button" aria-label="切换到中文"><svg aria-hidden="true"><use href="#globe"/></svg><span class="en" lang="zh-CN">中文</span><span class="zh" lang="en">EN</span></button>
+      <button class="locale" id="language" type="button" aria-label="切换到中文"><svg aria-hidden="true"><use href="#globe"/></svg><span class="en">中文</span><span class="zh">EN</span></button>
     </div>
   </header>
-  <main>
-    <section class="hero frame" id="about" aria-labelledby="name">
-      <div class="intro">
-        <p class="eyebrow affiliation"><span class="rule"></span><span class="en">Peking University</span><span class="zh">北京大学</span></p>
-        <h1 id="name"><span lang="en">Xinyu <i>Tan</i><b>.</b></span> <span class="han" lang="zh-CN">谭昕宇</span></h1>
-        <p class="bio en">I’m a master’s student at <strong>Peking University</strong> and a research intern at <strong>360</strong>, where I train language models for coding through supervised fine-tuning and reinforcement learning.</p>
-        <p class="bio zh">我是<strong>北京大学</strong>关键软件专业的硕士研究生，目前在 <strong>360</strong> 实习，研究如何通过监督微调（SFT）与强化学习（RL）提升大语言模型的编程能力。</p>
-        <div class="interests"><span class="en">AI agents</span><span class="zh">智能体</span><span class="en">Multimodal LLMs</span><span class="zh">多模态大模型</span><span class="en">Model compression</span><span class="zh">模型压缩</span></div>
-        <div class="contact-links">
-          <a class="contact primary" href="https://scholar.google.com/citations?user=gGm2-SwAAAAJ&amp;hl=en"><svg aria-hidden="true"><use href="#cap"/></svg>Google Scholar</a>
-          <a class="contact" href="https://github.com/12345txy"><svg aria-hidden="true"><use href="#github"/></svg>GitHub</a>
-          <a class="contact" href="mailto:tanxinyu@bupt.edu.cn"><svg aria-hidden="true"><use href="#mail"/></svg><span class="en">Email</span><span class="zh">邮件</span></a>
-        </div>
+
+  <div class="layout">
+    <aside class="profile" aria-label="Profile">
+      <img class="avatar" src="assets/xinyu-tan.webp" width="760" height="759" alt="Xinyu Tan by the sea" data-alt-zh="谭昕宇在海边的照片">
+      <div class="profile-text">
+        <h1>Xinyu Tan <span class="han">谭昕宇</span></h1>
+        <p class="affil"><span class="en">M.S. student @ Peking University</span><span class="zh">北京大学 · 硕士研究生</span></p>
+        <p class="tagline"><span class="en">Research intern @ 360 Group. Training coding LLMs with SFT &amp; RL.</span><span class="zh">360 集团研究实习生，用 SFT 与 RL 训练代码大模型。</span></p>
+        <ul class="profile-links">
+          <li class="muted"><svg aria-hidden="true"><use href="#pin"/></svg><span class="en">Beijing, China</span><span class="zh">中国 · 北京</span></li>
+          <li><a href="mailto:tanxinyu@bupt.edu.cn"><svg aria-hidden="true"><use href="#mail"/></svg>tanxinyu@bupt.edu.cn</a></li>
+          <li><a href="https://github.com/12345txy"><svg aria-hidden="true"><use href="#github"/></svg>GitHub</a></li>
+          <li><a href="https://scholar.google.com/citations?user=gGm2-SwAAAAJ&amp;hl=en"><svg aria-hidden="true"><use href="#cap"/></svg>Google Scholar</a></li>
+        </ul>
       </div>
-      <div class="portrait-block">
-        <div class="portrait-frame">
-          <div class="portrait-ring"><img src="assets/xinyu-tan.webp" width="760" height="759" alt="Xinyu Tan by the sea" data-alt-zh="谭昕宇在海边的照片"></div>
-          <i class="cross tl" aria-hidden="true"></i><i class="cross tr" aria-hidden="true"></i><i class="cross bl" aria-hidden="true"></i><i class="cross br" aria-hidden="true"></i>
+    </aside>
+
+    <main>
+      <section id="about" aria-labelledby="about-title">
+        <h2 id="about-title"><span class="en">About Me</span><span class="zh">关于我</span></h2>
+        <div class="en prose">
+          <p>I am a master’s student in Key Software at <a class="hl" href="https://www.pku.edu.cn/">Peking University</a> (2026–2029) and a research intern at <span class="hl">360 Group</span>, where I train <strong>coding LLMs and software-engineering agents</strong> with supervised fine-tuning and reinforcement learning.</p>
+          <p>I received my B.Eng. in Network Engineering from <span class="hl">Beijing University of Posts and Telecommunications</span>, ranking <span class="hl">1st / 50</span> in my major (GPA 3.82 / 4.0) and receiving the <span class="hl">National Scholarship</span>. My work spans agent benchmarks (co-first author of <strong>Harness-Bench</strong>), physical-commonsense evaluation for video generation (<strong>PhyGenBench</strong>, <span class="hl">ICML 2025</span>), and extreme low-bit quantization (<strong>Fairy2i</strong>).</p>
         </div>
-        <p class="location"><svg aria-hidden="true"><use href="#pin"/></svg><span class="en">Beijing, China</span><span class="zh">中国 · 北京</span></p>
-      </div>
-    </section>
-    <section class="papers-section" id="publications" aria-labelledby="papers-title">
-      <div class="frame">
-        <div class="section-head">
-          <div><h2 id="papers-title"><span class="en">Publications</span><span class="zh">研究论文</span></h2>
-            <!-- citation-summary:start -->
-<p class="source-note"><span class="en">4 papers</span><span class="zh">4 篇论文</span><span class="sep" aria-hidden="true">/</span><strong><span class="en">337 citations</span><span class="zh">337 次引用</span></strong><span>· OpenAlex</span><span class="sep" aria-hidden="true">/</span><span>2026-11-26</span></p>
+        <div class="zh prose">
+          <p>我是<a class="hl" href="https://www.pku.edu.cn/">北京大学</a>关键软件专业硕士研究生（2026–2029），目前在 <span class="hl">360 集团</span>做研究实习，用监督微调（SFT）与强化学习（RL）训练<strong>代码大模型与软件工程智能体</strong>。</p>
+          <p>本科毕业于<span class="hl">北京邮电大学</span>网络工程专业，专业排名 <span class="hl">1 / 50</span>（绩点 3.82 / 4.0），获<span class="hl">国家奖学金</span>。研究工作包括智能体评测（<strong>Harness-Bench</strong>，共同一作）、文生视频物理常识评测（<strong>PhyGenBench</strong>，<span class="hl">ICML 2025</span>）以及极低比特量化（<strong>Fairy2i</strong>）。</p>
+        </div>
+
+        <ul class="stats" aria-label="Highlights">
+          <li><b>ICML</b><span class="en">2025 paper</span><span class="zh">2025 论文</span></li>
+          <li><!-- citation-stat:start -->
+<b>337</b><span class="en">citations</span><span class="zh">总被引</span>
+<!-- citation-stat:end --></li>
+          <li><b>1 / 50</b><span class="en">major ranking</span><span class="zh">专业排名</span></li>
+          <li><b><span class="en">National</span><span class="zh">国家</span></b><span class="en">Scholarship 2024</span><span class="zh">奖学金 2024</span></li>
+        </ul>
+
+        <p class="interests"><span class="label"><span class="en">Research interests</span><span class="zh">研究方向</span></span>
+          <span class="tag"><span class="en">Coding LLMs &amp; agents</span><span class="zh">代码大模型与智能体</span></span>
+          <span class="tag"><span class="en">LLM post-training (SFT / RL)</span><span class="zh">大模型后训练（SFT / RL）</span></span>
+          <span class="tag"><span class="en">Multimodal LLMs</span><span class="zh">多模态大模型</span></span>
+          <span class="tag"><span class="en">Model compression</span><span class="zh">模型压缩</span></span>
+        </p>
+      </section>
+
+      <section id="news" aria-labelledby="news-title">
+        <h2 id="news-title"><span class="en">News</span><span class="zh">动态</span></h2>
+        <ul class="news">
+          <li><time>2026.09</time><span class="en">Started my master’s at <span class="hl">Peking University</span>.</span><span class="zh">进入<span class="hl">北京大学</span>攻读硕士学位。</span></li>
+          <li><time>2026.08</time><span class="en"><strong>ArborMem</strong>, an online memory framework for long-running conversations, is on arXiv.</span><span class="zh"><strong>ArborMem</strong>（面向长期对话的在线记忆框架）发布于 arXiv。</span></li>
+          <li><time>2026.05</time><span class="en"><strong>Harness-Bench</strong> (<span class="hl">co-first author</span>) is on arXiv.</span><span class="zh"><strong>Harness-Bench</strong>（<span class="hl">共同一作</span>）发布于 arXiv。</span></li>
+          <li><time>2025.12</time><span class="en"><strong>Fairy2i</strong> (2-bit complex-valued LLMs) is on arXiv, with code and models released.</span><span class="zh"><strong>Fairy2i</strong>（2-bit 复数大模型）发布于 arXiv，代码与模型已开源。</span></li>
+          <li><time>2025.05</time><span class="en"><strong>PhyGenBench</strong> is accepted to <span class="hl">ICML 2025</span>.</span><span class="zh"><strong>PhyGenBench</strong> 被 <span class="hl">ICML 2025</span> 接收。</span></li>
+        </ul>
+      </section>
+
+      <section id="experience" aria-labelledby="exp-title">
+        <h2 id="exp-title"><span class="en">Experience &amp; Education</span><span class="zh">实习与教育</span></h2>
+        <div class="exp-grid">
+          <article class="exp current">
+            <span class="mono m360" aria-hidden="true">360</span>
+            <div>
+              <h3><span class="en">360 Group</span><span class="zh">360 集团</span></h3>
+              <p class="when"><span class="live" aria-hidden="true"></span><span class="en">Current</span><span class="zh">至今</span></p>
+              <p class="what"><span class="en">Research Intern · Coding LLMs</span><span class="zh">研究实习生 · 代码大模型</span></p>
+              <p class="note"><span class="en">SFT and RL for code generation and SWE agents.</span><span class="zh">面向代码生成与软件工程智能体的 SFT / RL。</span></p>
+            </div>
+          </article>
+          <article class="exp">
+            <span class="mono mpku" aria-hidden="true"><span class="en">PKU</span><span class="zh">北大</span></span>
+            <div>
+              <h3><span class="en">Peking University</span><span class="zh">北京大学</span></h3>
+              <p class="when">2026.09 – 2029.06</p>
+              <p class="what"><span class="en">M.S. · Key Software</span><span class="zh">硕士 · 关键软件</span></p>
+            </div>
+          </article>
+          <article class="exp">
+            <span class="mono mbupt" aria-hidden="true"><span class="en">BUPT</span><span class="zh">北邮</span></span>
+            <div>
+              <h3><span class="en">BUPT</span><span class="zh">北京邮电大学</span></h3>
+              <p class="when">2022.09 – 2026.06</p>
+              <p class="what"><span class="en">B.Eng. · Network Engineering</span><span class="zh">本科 · 网络工程</span></p>
+              <p class="note"><span class="en"><span class="hl">Rank 1 / 50</span> · GPA 3.82 / 4.0 · avg. 92.4</span><span class="zh"><span class="hl">排名 1 / 50</span> · 绩点 3.82 / 4.0 · 均分 92.4</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="publications" aria-labelledby="pub-title">
+        <h2 id="pub-title"><span class="en">Publications</span><span class="zh">论文</span></h2>
+        <!-- citation-summary:start -->
+<p class="source-note"><span class="en">4 papers</span><span class="zh">4 篇论文</span> · <span class="en">337 citations</span><span class="zh">总被引 337 次</span> · <a href="https://openalex.org/">OpenAlex</a> 2026-11-26 · <span class="en">* equal contribution</span><span class="zh">* 共同一作</span></p>
 <!-- citation-summary:end -->
-          </div>
-          <div class="filters interactive" role="group" aria-label="Publication type">
-            <button type="button" data-filter="all" aria-pressed="true"><span class="en">All</span><span class="zh">全部</span></button>
-            <button type="button" data-filter="conference" aria-pressed="false"><span class="en">Conference</span><span class="zh">会议</span></button>
-            <button type="button" data-filter="preprint" aria-pressed="false"><span class="en">Preprints</span><span class="zh">预印本</span></button>
-          </div>
+        <div class="filters" role="group" aria-label="Filter publications">
+          <!-- filters:start -->
+<button type="button" data-filter="all" aria-pressed="true"><span class="en">All</span><span class="zh">全部</span><span class="count">4</span></button>
+<button type="button" data-filter="cofirst" aria-pressed="false"><span class="en">Co-first author</span><span class="zh">共同一作</span><span class="count">1</span></button>
+<button type="button" data-filter="agents" aria-pressed="false"><span class="en">Agents &amp; LLM systems</span><span class="zh">智能体与 LLM 系统</span><span class="count">2</span></button>
+<button type="button" data-filter="multimodal" aria-pressed="false"><span class="en">Multimodal evaluation</span><span class="zh">多模态评测</span><span class="count">1</span></button>
+<button type="button" data-filter="compression" aria-pressed="false"><span class="en">Model compression</span><span class="zh">模型压缩</span><span class="count">1</span></button>
+<!-- filters:end -->
         </div>
         <div class="paper-list" id="paper-list">
           <!-- publications:start -->
-<article class="paper conference" data-type="conference">
-  <a class="fig" href="https://arxiv.org/abs/2410.05363" aria-label="Towards world simulator: Crafting physical commonsense-based benchmark for video generation"><img src="assets/phygenbench.webp" loading="lazy" alt=""></a>
-  <div><p class="meta"><span class="venue">ICML</span><span><span class="en">2025 · Poster</span><span class="zh">2025 · 海报</span></span></p>
-    <h3 lang="en"><a href="https://arxiv.org/abs/2410.05363">Towards world simulator: Crafting physical commonsense-based benchmark for video generation</a></h3>
-    <p class="authors">Fanqing Meng, Jiaqi Liao, <strong>Xinyu Tan</strong>, Quanfeng Lu, Wenqi Shao, Kaipeng Zhang, Yu Cheng, Dianqi Li, Ping Luo</p>
-    <p class="paper-links"><a href="https://arxiv.org/abs/2410.05363"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a> <a href="https://phygenbench123.github.io/"><span class="en">Project page</span><span class="zh">项目主页</span></a> <a class="cited" href="https://openalex.org/W4403346161" title="OpenAlex · 2026-11-26"><span class="en">248 citations</span><span class="zh">248 次引用</span></a></p>
+<article class="paper featured" data-tags="multimodal">
+  <a class="thumb" href="https://arxiv.org/abs/2410.05363" aria-label="Towards world simulator: Crafting physical commonsense-based benchmark for video generation"><img src="assets/phygenbench.webp" loading="lazy" alt=""></a>
+  <div class="paper-body">
+    <h3><a href="https://arxiv.org/abs/2410.05363">Towards world simulator: Crafting physical commonsense-based benchmark for video generation</a></h3>
+    <p class="authors">Fanqing Meng, Jiaqi Liao, <b class="me">Xinyu Tan</b>, Quanfeng Lu, Wenqi Shao, Kaipeng Zhang, Yu Cheng, Dianqi Li, Ping Luo</p>
+    <p class="summary"><span class="en">160 prompts over 27 physical laws that test whether text-to-video models respect physical commonsense, scored by the hierarchical PhyGenEval framework.</span><span class="zh">覆盖 4 大领域、27 条物理定律的 160 条提示词，评测文生视频模型是否符合物理常识，并配套三级层次化评估框架 PhyGenEval。</span></p>
+    <p class="paper-foot"><span class="venue">ICML 2025</span><span class="venue-note"><span class="en">Poster</span><span class="zh">Poster</span></span><a class="pl" href="https://arxiv.org/abs/2410.05363"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a><a class="pl" href="https://phygenbench123.github.io/"><svg aria-hidden="true"><use href="#link"/></svg>Project</a><a class="cites" href="https://openalex.org/W4403346161" title="OpenAlex · 2026-11-26"><span class="en">248 citations</span><span class="zh">被引 248</span></a></p>
   </div>
 </article>
-<article class="paper preprint" data-type="preprint">
-  <a class="fig" href="https://arxiv.org/abs/2605.27922" aria-label="Harness-Bench: Evaluating Agent Harnesses across Models and Realistic Workflows"><img src="assets/harness-bench.webp" loading="lazy" alt=""></a>
-  <div><p class="meta"><span class="venue"><span class="en">Preprint</span><span class="zh">预印本</span></span><span>2026</span></p>
-    <h3 lang="en"><a href="https://arxiv.org/abs/2605.27922">Harness-Bench: Evaluating Agent Harnesses across Models and Realistic Workflows</a></h3>
-    <p class="authors">Yilun Yao<sup>*</sup>, <strong>Xinyu Tan</strong><sup>*</sup>, Chao-Hsuan Liu<sup>*</sup>, Yaoming Li<sup>*</sup>, et al.<small><span class="en">* Equal contribution</span><span class="zh">* 共同一作</span></small></p>
-    <p class="paper-links"><a href="https://arxiv.org/abs/2605.27922"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a> <a class="cited" href="https://openalex.org/W7162690279" title="OpenAlex · 2026-11-26"><span class="en">87 citations</span><span class="zh">87 次引用</span></a></p>
+<article class="paper featured" data-tags="agents cofirst">
+  <a class="thumb" href="https://arxiv.org/abs/2605.27922" aria-label="Harness-Bench: Evaluating Agent Harnesses across Models and Realistic Workflows"><img src="assets/harness-bench.webp" loading="lazy" alt=""></a>
+  <div class="paper-body">
+    <h3><a href="https://arxiv.org/abs/2605.27922">Harness-Bench: Evaluating Agent Harnesses across Models and Realistic Workflows</a></h3>
+    <p class="authors">Yilun Yao<sup>*</sup>, <b class="me">Xinyu Tan</b><sup>*</sup>, Chao-Hsuan Liu<sup>*</sup>, Yaoming Li<sup>*</sup>, et al.</p>
+    <p class="summary"><span class="en">A diagnostic benchmark of 106 sandboxed tasks that isolates how the agent harness (context, tools, state, permissions) changes results across model backends.</span><span class="zh">包含 106 个沙箱离线任务的诊断型基准，在多种模型后端下单独衡量智能体 harness（上下文、工具、状态、权限）对结果的影响。</span></p>
+    <p class="paper-foot"><span class="venue">arXiv 2026</span><a class="pl" href="https://arxiv.org/abs/2605.27922"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a><a class="cites" href="https://openalex.org/W7162690279" title="OpenAlex · 2026-11-26"><span class="en">87 citations</span><span class="zh">被引 87</span></a><span class="role"><span class="en">Co-first author</span><span class="zh">共同一作</span></span></p>
   </div>
 </article>
-<article class="paper preprint" data-type="preprint">
-  <a class="fig" href="https://arxiv.org/abs/2608.17534" aria-label="ArborMem: Navigating Interaction States with Memory Forests"><img src="assets/arbormem.webp" loading="lazy" alt=""></a>
-  <div><p class="meta"><span class="venue"><span class="en">Preprint</span><span class="zh">预印本</span></span><span>2026</span></p>
-    <h3 lang="en"><a href="https://arxiv.org/abs/2608.17534">ArborMem: Navigating Interaction States with Memory Forests</a></h3>
-    <p class="authors">Zongwei Lv, Yuemeng Xu, Yilun Yao, Siyi Ding, <strong>Xinyu Tan</strong>, et al.</p>
-    <p class="paper-links"><a href="https://arxiv.org/abs/2608.17534"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a> <a class="cited" href="https://openalex.org/W7204216685" title="OpenAlex · 2026-11-26"><span class="en">0 citations</span><span class="zh">0 次引用</span></a></p>
+<article class="paper" data-tags="compression">
+  <a class="thumb" href="https://arxiv.org/abs/2512.02901" aria-label="Fairy2i: Training Complex LLMs from Real LLMs with All Parameters in {±1, ±i}"><img src="assets/fairy2i.webp" loading="lazy" alt=""></a>
+  <div class="paper-body">
+    <h3><a href="https://arxiv.org/abs/2512.02901">Fairy2i: Training Complex LLMs from Real LLMs with All Parameters in {±1, ±i}</a></h3>
+    <p class="authors">Feiyu Wang, <b class="me">Xinyu Tan</b>, Bokai Huang, et al.</p>
+    <p class="summary"><span class="en">Turns pretrained real-valued LLMs into an equivalent widely-linear complex form, so 2-bit weights in {±1, ±i} come close to full-precision accuracy.</span><span class="zh">把预训练实数 LLM 无损转换为广义线性复数形式，配合相位感知量化与残差递归量化，使 {±1, ±i} 的 2-bit 模型逼近全精度效果。</span></p>
+    <p class="paper-foot"><span class="venue">arXiv 2025</span><a class="pl" href="https://arxiv.org/abs/2512.02901"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a><a class="pl" href="https://github.com/PKULab1806/Fairy2i-W2"><svg aria-hidden="true"><use href="#code"/></svg>Code</a><a class="pl" href="https://huggingface.co/PKU-DS-LAB/Fairy2i-W2"><svg aria-hidden="true"><use href="#cube"/></svg>Model</a><a class="cites" href="https://openalex.org/W4417010769" title="OpenAlex · 2026-11-26"><span class="en">2 citations</span><span class="zh">被引 2</span></a><span class="role"><span class="en">Second author</span><span class="zh">第二作者</span></span></p>
   </div>
 </article>
-<article class="paper preprint" data-type="preprint">
-  <a class="fig" href="https://arxiv.org/abs/2512.02901" aria-label="Fairy2i: Training Complex LLMs from Real LLMs with All Parameters in {±1, ±i}"><img src="assets/fairy2i.webp" loading="lazy" alt=""></a>
-  <div><p class="meta"><span class="venue"><span class="en">Preprint</span><span class="zh">预印本</span></span><span>2025</span></p>
-    <h3 lang="en"><a href="https://arxiv.org/abs/2512.02901">Fairy2i: Training Complex LLMs from Real LLMs with All Parameters in {±1, ±i}</a></h3>
-    <p class="authors">Feiyu Wang, <strong>Xinyu Tan</strong>, Bokai Huang, et al.</p>
-    <p class="paper-links"><a href="https://arxiv.org/abs/2512.02901"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a> <a href="https://github.com/PKULab1806/Fairy2i-W2"><span class="en">Code</span><span class="zh">代码</span></a> <a href="https://huggingface.co/PKU-DS-LAB/Fairy2i-W2"><span class="en">Model</span><span class="zh">模型</span></a> <a class="cited" href="https://openalex.org/W4417010769" title="OpenAlex · 2026-11-26"><span class="en">2 citations</span><span class="zh">2 次引用</span></a></p>
+<article class="paper" data-tags="agents">
+  <a class="thumb" href="https://arxiv.org/abs/2608.17534" aria-label="ArborMem: Navigating Interaction States with Memory Forests"><img src="assets/arbormem.webp" loading="lazy" alt=""></a>
+  <div class="paper-body">
+    <h3><a href="https://arxiv.org/abs/2608.17534">ArborMem: Navigating Interaction States with Memory Forests</a></h3>
+    <p class="authors">Zongwei Lv, Yuemeng Xu, Yilun Yao, Siyi Ding, <b class="me">Xinyu Tan</b>, et al.</p>
+    <p class="summary"><span class="en">An online memory framework that organizes a long-running conversation as a navigable forest of interaction states, so the assistant resumes the right thread.</span><span class="zh">在线记忆框架，把长期对话组织成可导航的“交互状态森林”，让助手准确接续被打断的任务线程。</span></p>
+    <p class="paper-foot"><span class="venue">arXiv 2026</span><a class="pl" href="https://arxiv.org/abs/2608.17534"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a></p>
   </div>
 </article>
 <!-- publications:end -->
         </div>
-      </div>
-    </section>
-    <section class="career frame" id="experience" aria-labelledby="career-title">
-      <h2 id="career-title"><span class="en">Experience &amp; education</span><span class="zh">实习与教育经历</span></h2>
-      <div class="timeline">
-        <article><p class="timeline-date"><span class="live-dot"></span><span class="en">Current internship</span><span class="zh">当前实习</span></p><div><h3><span class="en">360 Group</span><span class="zh">360 集团</span></h3><p class="role"><span class="en">Research intern · Coding LLMs</span><span class="zh">研究实习生 · 代码大模型</span></p><p class="detail"><span class="en">Supervised fine-tuning and reinforcement learning for code generation.</span><span class="zh">面向代码生成的监督微调与强化学习。</span></p></div></article>
-        <article><p class="timeline-date"><span class="en">Sep 2026 – Jun 2029 <small>(expected)</small></span><span class="zh">2026.09 – 2029.06 <small>（预计）</small></span></p><div><h3><span class="en">Peking University</span><span class="zh">北京大学</span></h3><p class="role"><span class="en">Master’s student · Key Software</span><span class="zh">硕士研究生 · 关键软件</span></p></div></article>
-        <article><p class="timeline-date"><span class="en">Sep 2022 – Jun 2026</span><span class="zh">2022.09 – 2026.06</span></p><div><h3><span class="en">Beijing University of Posts and Telecommunications</span><span class="zh">北京邮电大学</span></h3><p class="role"><span class="en">Bachelor’s degree · Network Engineering</span><span class="zh">本科 · 网络工程</span></p><p class="detail"><span class="en">Ranked 1st of 50 in my major. National Scholarship, 2024.</span><span class="zh">专业排名 1/50，获 2024 年国家奖学金。</span></p></div></article>
-      </div>
-    </section>
-  </main>
-  <footer class="frame"><a class="footer-name" href="#about">Xinyu Tan <span lang="zh-CN">谭昕宇</span></a><a class="footmail" href="mailto:tanxinyu@bupt.edu.cn"><svg aria-hidden="true"><use href="#mail"/></svg>tanxinyu@bupt.edu.cn</a></footer>
+      </section>
+
+      <section id="awards" aria-labelledby="awards-title">
+        <h2 id="awards-title"><span class="en">Honors &amp; Awards</span><span class="zh">荣誉奖项</span></h2>
+        <ul class="awards">
+          <li class="top"><time>2024</time><div><b><span class="en">National Scholarship</span><span class="zh">国家奖学金</span></b><span class="en">Ministry of Education of China</span><span class="zh">中华人民共和国教育部</span></div></li>
+          <li><time>2023</time><div><b><span class="en">First-Class Scholarship</span><span class="zh">一等奖学金</span></b><span class="en">BUPT</span><span class="zh">北京邮电大学</span></div></li>
+          <li><time>2024</time><div><b><span class="en">Third Prize, Northern Region</span><span class="zh">北部赛区三等奖</span></b><span class="en">15th China Service Outsourcing Innovation &amp; Entrepreneurship Competition</span><span class="zh">第十五届中国大学生服务外包创新创业大赛</span></div></li>
+          <li><time>2023</time><div><b><span class="en">Third Prize</span><span class="zh">三等奖</span></b><span class="en">Chinese Mathematics Competitions for College Students</span><span class="zh">全国大学生数学竞赛</span></div></li>
+          <li><time>2023/24</time><div><b><span class="en">Third Prize (twice)</span><span class="zh">三等奖（两次）</span></b><span class="en">National English Competition for College Students</span><span class="zh">全国大学生英语竞赛</span></div></li>
+        </ul>
+      </section>
+
+      <footer>
+        <span>© Xinyu Tan</span>
+        <span><span class="en">Last updated</span><span class="zh">最后更新</span> <!-- updated:start -->
+2026-11-26
+<!-- updated:end --></span>
+      </footer>
+    </main>
+  </div>
+
   <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
     <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
@@ -115,6 +199,9 @@
     <symbol id="cap" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5-10-5Zm4 2.5V16q6 5 12 0v-4.5M22 9v7"/></symbol>
     <symbol id="github" viewBox="0 0 24 24"><path stroke="none" fill="currentColor" d="M12 .9a11.1 11.1 0 0 0-3.5 21.64c.55.1.76-.24.76-.54v-2.09c-3.1.68-3.76-1.32-3.76-1.32-.51-1.28-1.24-1.62-1.24-1.62-1.02-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 1.69 2.62.77 3.26.59.1-.72.39-1.21.71-1.49-2.47-.28-5.08-1.23-5.08-5.49 0-1.21.43-2.2 1.14-2.97-.11-.28-.49-1.4.11-2.92 0 0 .94-.3 3.06 1.14a10.62 10.62 0 0 1 5.58 0c2.12-1.44 3.05-1.14 3.05-1.14.61 1.52.23 2.64.12 2.92.71.77 1.14 1.76 1.14 2.97 0 4.27-2.61 5.2-5.1 5.48.4.35.76 1.02.76 2.06V22c0 .3.2.65.77.54A11.1 11.1 0 0 0 12 .9Z"/></symbol>
     <symbol id="paper" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6m-6 4h6"/></symbol>
+    <symbol id="code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5M14 4l-4 16"/></symbol>
+    <symbol id="cube" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12v9m0-9L4 7.5"/></symbol>
+    <symbol id="link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
   </svg>
 </body>
 </html>

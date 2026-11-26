@@ -32,6 +32,17 @@
         "source": "OpenAlex",
         "url": "https://openalex.org/W4403346161",
         "checkedAt": "2026-11-26"
+      },
+      "topic": "multimodal",
+      "venueLabel": "ICML 2025",
+      "venueNote": {
+        "en": "Poster",
+        "zh": "Poster"
+      },
+      "featured": true,
+      "summary": {
+        "en": "160 prompts over 27 physical laws that test whether text-to-video models respect physical commonsense, scored by the hierarchical PhyGenEval framework.",
+        "zh": "覆盖 4 大领域、27 条物理定律的 160 条提示词，评测文生视频模型是否符合物理常识，并配套三级层次化评估框架 PhyGenEval。"
       }
     },
     {
@@ -58,33 +69,17 @@
         "source": "OpenAlex",
         "url": "https://openalex.org/W7162690279",
         "checkedAt": "2026-11-26"
-      }
-    },
-    {
-      "id": "arbormem",
-      "title": "ArborMem: Navigating Interaction States with Memory Forests",
-      "authors": [
-        "Zongwei Lv",
-        "Yuemeng Xu",
-        "Yilun Yao",
-        "Siyi Ding",
-        "Xinyu Tan",
-        "et al."
-      ],
-      "year": 2026,
-      "venue": "arXiv preprint",
-      "paperUrl": "https://arxiv.org/abs/2608.17534",
-      "links": [
-        {
-          "label": "Google Scholar",
-          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:2osOgNQ5qMEC"
-        }
-      ],
-      "citations": {
-        "count": 0,
-        "source": "OpenAlex",
-        "url": "https://openalex.org/W7204216685",
-        "checkedAt": "2026-11-26"
+      },
+      "topic": "agents",
+      "venueLabel": "arXiv 2026",
+      "role": {
+        "en": "Co-first author",
+        "zh": "共同一作"
+      },
+      "featured": true,
+      "summary": {
+        "en": "A diagnostic benchmark of 106 sandboxed tasks that isolates how the agent harness (context, tools, state, permissions) changes results across model backends.",
+        "zh": "包含 106 个沙箱离线任务的诊断型基准，在多种模型后端下单独衡量智能体 harness（上下文、工具、状态、权限）对结果的影响。"
       }
     },
     {
@@ -118,6 +113,49 @@
         "source": "OpenAlex",
         "url": "https://openalex.org/W4417010769",
         "checkedAt": "2026-11-26"
+      },
+      "topic": "compression",
+      "venueLabel": "arXiv 2025",
+      "role": {
+        "en": "Second author",
+        "zh": "第二作者"
+      },
+      "summary": {
+        "en": "Turns pretrained real-valued LLMs into an equivalent widely-linear complex form, so 2-bit weights in {±1, ±i} come close to full-precision accuracy.",
+        "zh": "把预训练实数 LLM 无损转换为广义线性复数形式，配合相位感知量化与残差递归量化，使 {±1, ±i} 的 2-bit 模型逼近全精度效果。"
+      }
+    },
+    {
+      "id": "arbormem",
+      "title": "ArborMem: Navigating Interaction States with Memory Forests",
+      "authors": [
+        "Zongwei Lv",
+        "Yuemeng Xu",
+        "Yilun Yao",
+        "Siyi Ding",
+        "Xinyu Tan",
+        "et al."
+      ],
+      "year": 2026,
+      "venue": "arXiv preprint",
+      "paperUrl": "https://arxiv.org/abs/2608.17534",
+      "links": [
+        {
+          "label": "Google Scholar",
+          "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=gGm2-SwAAAAJ&citation_for_view=gGm2-SwAAAAJ:2osOgNQ5qMEC"
+        }
+      ],
+      "citations": {
+        "count": 0,
+        "source": "OpenAlex",
+        "url": "https://openalex.org/W7204216685",
+        "checkedAt": "2026-11-26"
+      },
+      "topic": "agents",
+      "venueLabel": "arXiv 2026",
+      "summary": {
+        "en": "An online memory framework that organizes a long-running conversation as a navigable forest of interaction states, so the assistant resumes the right thread.",
+        "zh": "在线记忆框架，把长期对话组织成可导航的“交互状态森林”，让助手准确接续被打断的任务线程。"
       }
     }
   ]

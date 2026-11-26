@@ -8,6 +8,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "dist" if (ROOT / "dist/index.html").is_file() else ROOT
 
+TOPICS = [
+    ("agents", "Agents & LLM systems", "智能体与 LLM 系统"),
+    ("multimodal", "Multimodal evaluation", "多模态评测"),
+    ("compression", "Model compression", "模型压缩"),
+]
+LINK_LABELS = {"Code": "Code", "Model": "Model", "Project page": "Project"}
+LINK_ICONS = {"Code": "code", "Model": "cube", "Project page": "link"}
+
 
 def bilingual(english, chinese):
     return f'<span class="en">{escape(english)}</span><span class="zh">{escape(chinese)}</span>'
@@ -16,44 +24,67 @@ def bilingual(english, chinese):
 def tagged_author(name):
     clean = escape(name.rstrip("*"))
     if clean == "Xinyu Tan":
-        clean = f"<strong>{clean}</strong>"
+        clean = f'<b class="me">{clean}</b>'
     return clean + ("<sup>*</sup>" if name.endswith("*") else "")
 
 
+def is_cofirst(paper):
+    return any(name.rstrip("*") == "Xinyu Tan" and name.endswith("*") for name in paper["authors"])
+
+
 def paper_html(paper):
-    preprint = paper["venue"] == "arXiv preprint"
-    kind = "preprint" if preprint else "conference"
-    badge = bilingual("Preprint", "预印本") if preprint else "ICML"
-    meta = str(paper["year"]) if preprint else bilingual(f'{paper["year"]} · Poster', f'{paper["year"]} · 海报')
-    authors = ", ".join(tagged_author(name) for name in paper["authors"])
-    if any(name.endswith("*") for name in paper["authors"]):
-        authors += "<small>" + bilingual("* Equal contribution", "* 共同一作") + "</small>"
     url = escape(paper["paperUrl"], quote=True)
     title = escape(paper["title"])
     slug = escape(paper["id"], quote=True)
-    labels = {"Code": "代码", "Model": "模型", "Project page": "项目主页"}
-    links = [f'<a href="{url}"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a>']
+    tags = [paper["topic"]] + (["cofirst"] if is_cofirst(paper) else [])
+    authors = ", ".join(tagged_author(name) for name in paper["authors"])
+
+    venue = f'<span class="venue">{escape(paper["venueLabel"])}</span>'
+    if paper.get("venueNote"):
+        venue += f'<span class="venue-note">{bilingual(paper["venueNote"]["en"], paper["venueNote"]["zh"])}</span>'
+
+    links = [f'<a class="pl" href="{url}"><svg aria-hidden="true"><use href="#paper"/></svg>arXiv</a>']
     for link in paper["links"]:
         label = link["label"]
-        if label == "Google Scholar":
+        if label not in LINK_LABELS:
             continue
-        text = bilingual(label, labels.get(label, label))
-        links.append(f'<a href="{escape(link["url"], quote=True)}">{text}</a>')
+        icon = LINK_ICONS[label]
+        links.append(
+            f'<a class="pl" href="{escape(link["url"], quote=True)}"><svg aria-hidden="true"><use href="#{icon}"/></svg>{LINK_LABELS[label]}</a>'
+        )
     stat = paper["citations"]
     count = stat["count"]
-    checked = escape(stat["checkedAt"])
-    links.append(
-        f'<a class="cited" href="{escape(stat["url"], quote=True)}" title="OpenAlex · {checked}">'
-        + bilingual(f"{count} citations", f"{count} 次引用") + "</a>"
-    )
-    return f'''<article class="paper {kind}" data-type="{kind}">
-  <a class="fig" href="{url}" aria-label="{title}"><img src="assets/{slug}.webp" loading="lazy" alt=""></a>
-  <div><p class="meta"><span class="venue">{badge}</span><span>{meta}</span></p>
-    <h3 lang="en"><a href="{url}">{title}</a></h3>
+    if count > 0:
+        links.append(
+            f'<a class="cites" href="{escape(stat["url"], quote=True)}" title="OpenAlex · {escape(stat["checkedAt"])}">'
+            + bilingual(f"{count} citations", f"被引 {count}") + "</a>"
+        )
+    role = ""
+    if paper.get("role"):
+        role = f'<span class="role">{bilingual(paper["role"]["en"], paper["role"]["zh"])}</span>'
+
+    featured = " featured" if paper.get("featured") else ""
+    summary = paper.get("summary", {})
+    return f'''<article class="paper{featured}" data-tags="{' '.join(tags)}">
+  <a class="thumb" href="{url}" aria-label="{title}"><img src="assets/{slug}.webp" loading="lazy" alt=""></a>
+  <div class="paper-body">
+    <h3><a href="{url}">{title}</a></h3>
     <p class="authors">{authors}</p>
-    <p class="paper-links">{' '.join(links)}</p>
+    <p class="summary">{bilingual(summary.get("en", ""), summary.get("zh", ""))}</p>
+    <p class="paper-foot">{venue}{''.join(links)}{role}</p>
   </div>
 </article>'''
+
+
+def filters_html(papers):
+    counts = {key: sum(p["topic"] == key for p in papers) for key, _, _ in TOPICS}
+    buttons = [("all", "All", "全部", len(papers)), ("cofirst", "Co-first author", "共同一作", sum(map(is_cofirst, papers)))]
+    buttons += [(key, en, zh, counts[key]) for key, en, zh in TOPICS if counts[key]]
+    return "\n".join(
+        f'<button type="button" data-filter="{key}" aria-pressed="{str(key == "all").lower()}">'
+        f'{bilingual(en, zh)}<span class="count">{n}</span></button>'
+        for key, en, zh, n in buttons
+    )
 
 
 def replace_block(html, key, content):
@@ -68,16 +99,21 @@ def replace_block(html, key, content):
 def main():
     papers = json.loads((PUBLIC / "data/publications.json").read_text())["papers"]
     dates = sorted({date.fromisoformat(p["citations"]["checkedAt"]).isoformat() for p in papers})
-    checked = dates[0] if len(dates) == 1 else f"{dates[0]} – {dates[-1]}"
+    checked = dates[-1]
     count = sum(p["citations"]["count"] for p in papers)
     summary = (
         '<p class="source-note">' + bilingual(f"{len(papers)} papers", f"{len(papers)} 篇论文")
-        + '<span class="sep" aria-hidden="true">/</span><strong>'
-        + bilingual(f"{count} citations", f"{count} 次引用") + "</strong><span>· OpenAlex</span>"
-        + f'<span class="sep" aria-hidden="true">/</span><span>{checked}</span></p>'
+        + " · " + bilingual(f"{count} citations", f"总被引 {count} 次")
+        + f' · <a href="https://openalex.org/">OpenAlex</a> {checked}'
+        + " · " + bilingual("* equal contribution", "* 共同一作") + "</p>"
     )
+    stat = f'<b>{count}</b>{bilingual("citations", "总被引")}'
     path = PUBLIC / "index.html"
-    html = replace_block(path.read_text(), "citation-summary", summary)
+    html = path.read_text()
+    html = replace_block(html, "citation-summary", summary)
+    html = replace_block(html, "citation-stat", stat)
+    html = replace_block(html, "updated", checked)
+    html = replace_block(html, "filters", filters_html(papers))
     path.write_text(replace_block(html, "publications", "\n".join(map(paper_html, papers))))
 
 

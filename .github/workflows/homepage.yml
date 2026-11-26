@@ -8,6 +8,8 @@ on:
       - scripts/update_citations.py
       - scripts/render_publications.py
       - data/publications.json
+      - index.html
+      - assets/**
   schedule:
     - cron: '17 0 * * 1'
   workflow_dispatch:
